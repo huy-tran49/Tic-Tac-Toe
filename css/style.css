@@ -13,14 +13,21 @@ h1 {
     max-width: 475px;
     max-height: 475px;
     margin: 0 auto;
+    
 }
 
 div.board {
     width: 150px;
     height: 150px;
     border: 1px solid black;
-    display: inline-block;
+    display: inline-flex;
     margin-right: 5px;
+    margin-bottom: 5px;
+    vertical-align: top;
+    font-size: 200px;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 30px;
 }
 
 #container {

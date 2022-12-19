@@ -19,8 +19,34 @@
 const gameBoard = document.querySelector('#game-board')
 const player1 = document.querySelector('#player1')
 const player2 = document.querySelector('#player2')
+const currentGameBoard = []
 
-const turnCounter = 1
+let turnCounter = 2
+let result = 'x'
+
+
+const alternatePlayer = () => {
+    if (turnCounter % 2 === 0) { 
+             return 'o'
+    } else {  
+            return 'x'
+    }   
+}
+
+const updateResult = () => {
+    result = alternatePlayer()
+}
+
+const hidePlayerText = () => {
+    if (result === 'o') {
+        player2.style.display = 'block'
+        player1.style.display = 'none'
+    } else {
+        player1.style.display = 'block'
+        player2.style.display = 'none'
+    }
+}
+
 
 for(let i = 0; i < 9; i++){
     const square = document.createElement('div')
@@ -28,18 +54,24 @@ for(let i = 0; i < 9; i++){
     square.setAttribute('id', i)
     gameBoard.appendChild(square)
     square.addEventListener('click', () => {
-        
+        playerClick(result)
+        updateResult()
+        hidePlayerText()
+        turnCounter++
     })
 } 
 
-const playerOneClick = () => {
-    event.target.style.backgroundColor = 'rgb(0, 153, 51)'
-    turnCounter++
+const playerClick = (text) => {
+    event.target.innerText = text
 }
 
-const playerTwoClick = () => {
-    event.target.style.backgroundColor = 'rgb(102, 0, 255)'
-    turnCounter++
-}
-
+const square1 = document.getElementById('#0')
+const square2 = document.getElementById('#1')
+const square3 = document.getElementById('#2')
+const square4 = document.getElementById('#3')
+const square5 = document.getElementById('#4')
+const square6 = document.getElementById('#5')
+const square7 = document.getElementById('#6')
+const square8 = document.getElementById('#7')
+const square9 = document.getElementById('#8')
 
