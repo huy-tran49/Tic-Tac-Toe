@@ -19,7 +19,8 @@
 const gameBoard = document.querySelector('#game-board')
 const player1 = document.querySelector('#player1')
 const player2 = document.querySelector('#player2')
-const currentGameBoard = []
+
+const currentGameBoard = ['','','','','','','','','']
 
 let turnCounter = 2
 let result = 'x'
@@ -27,9 +28,9 @@ let result = 'x'
 
 const alternatePlayer = () => {
     if (turnCounter % 2 === 0) { 
-             return 'o'
+        return 'o'
     } else {  
-            return 'x'
+        return 'x'
     }   
 }
 
@@ -47,17 +48,20 @@ const hidePlayerText = () => {
     }
 }
 
-
 for(let i = 0; i < 9; i++){
     const square = document.createElement('div')
     square.classList.add('board')
     square.setAttribute('id', i)
     gameBoard.appendChild(square)
+    square.value = i
+    
+
     square.addEventListener('click', () => {
         playerClick(result)
         updateResult()
         hidePlayerText()
         turnCounter++
+        currentGameBoard[i] = result
     })
 } 
 
@@ -65,13 +69,21 @@ const playerClick = (text) => {
     event.target.innerText = text
 }
 
-const square1 = document.getElementById('#0')
-const square2 = document.getElementById('#1')
-const square3 = document.getElementById('#2')
-const square4 = document.getElementById('#3')
-const square5 = document.getElementById('#4')
-const square6 = document.getElementById('#5')
-const square7 = document.getElementById('#6')
-const square8 = document.getElementById('#7')
-const square9 = document.getElementById('#8')
-
+const winCondition = [
+    ['o','o','o','','','','','',''],
+    ['','','','o','o','o','','',''],
+    ['','','','','','','o','o','o'],
+    ['o','','','o','','','o','',''],
+    ['','o','','','o','','','o',''],
+    ['','','o','','','o','','','o'],
+    ['o','','','','o','','','','o'],
+    ['','','o','','o','','o','',''],
+    ['x','x','x','','','','','',''],
+    ['','','','x','x','x','','',''],
+    ['','','','','','','x','x','x'],
+    ['x','','','x','','','x','',''],
+    ['','x','','','x','','','x',''],
+    ['','','x','','','x','','','x'],
+    ['x','','','','x','','','','x'],
+    ['','','x','','x','','x','','']
+]
