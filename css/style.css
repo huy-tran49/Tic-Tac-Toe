@@ -46,3 +46,7 @@ div.board {
     color: rgb(102, 0, 255);
     font-size: 40px;
 }
+
+.board:checked {
+    pointer-events: none;
+}
