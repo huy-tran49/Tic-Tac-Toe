@@ -56,4 +56,18 @@ h2#status {
     display:flex;
     justify-content: center;
     margin-top: 175px;
+    color: rgb(54, 37, 20);
+}
+
+#reset-container{
+    display:flex;
+    justify-content: center;  
+}
+
+button#reset {
+    height: 25px;
+    width: 150px;
+    background-color: rgb(17, 41, 63);
+    color: white;
+    border-radius: 5px;
 }

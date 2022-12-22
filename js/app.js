@@ -19,13 +19,13 @@
 const gameBoard = document.querySelector('#game-board')
 const player1 = document.querySelector('#player1')
 const player2 = document.querySelector('#player2')
-const gameStatus = document.getElementById('status')
+const status = document.getElementById('status')
+const reset = document.getElementById('reset')
 
 let currentPlayerBoard = ['','','','','','','','','']
 let gameActive = true
 let turnCounter = 3
 let result = 'x'
-
 
 const alternatePlayer = () => {
     if (turnCounter % 2 === 0) { 
@@ -50,24 +50,23 @@ const hidePlayerText = () => {
     }
 }
 
-for(let i = 0; i < 9; i++){
-    const square = document.createElement('div')
-    square.classList.add('board')
-    square.setAttribute('id', i)
-    gameBoard.appendChild(square)
-    square.value = i
-    
-
-    square.addEventListener('click', () => {
+const initializeGame = () =>{
+    for(let i = 0; i < 9; i++){
+        const square = document.createElement('div')
+        square.classList.add('board')
+        square.setAttribute('id', i)
+        gameBoard.appendChild(square)
+        square.value = i
+        square.addEventListener('click', () => {
         playerClick(result)
         updateResult()
         hidePlayerText()
         updateGameBoard()
         checkWinCondition()
-
-        
-    })
-} 
+        lockGameBoard()        
+        })
+    } 
+}
 
 const playerClick = (text) => {
     event.target.innerText = text
@@ -75,9 +74,7 @@ const playerClick = (text) => {
 }
 
 const updateGameBoard = () => {
-    
     const index = event.target.value
-    console.log(index)
     currentPlayerBoard[index] = result
 }
 
@@ -104,14 +101,17 @@ const checkWinCondition = () => {
         }
         if (a === b && b === c) {
             gameWon = true
-            
             break
         }
     }
     
 if (gameWon) {
-        gameStatus.innerHTML = winMessage()
+        status.innerHTML = winMessage()
         gameActive = false
+        return
+    } else if (turnCounter === 12 && gameWon === false) {
+        gameActive = false
+        status.innerHTML = `Draw.`
         return
     }
 }
@@ -123,3 +123,37 @@ const winMessage = ()=>{
         return `Player O win`
     }   
 }
+
+const lockGameBoard = () => {
+    const square = document.querySelectorAll('.board')
+    if (gameActive === false) {       
+        square.forEach((sq)=>{
+            sq.classList.add('clicked')
+        })
+    }
+}
+
+reset.addEventListener('click', ()=>{
+    resetGame()
+})
+
+const resetGameBoard = () => {
+    const square = document.querySelectorAll('.board')
+    square.forEach((sq)=>{
+        sq.innerText = ''
+        sq.classList.remove('clicked')
+    })
+}
+
+const resetGame = () => {
+    resetGameBoard()
+    currentPlayerBoard = ['','','','','','','','','']
+    gameActive = true
+    turnCounter = 3
+    result = 'x'
+    player1.style.display = 'block'
+    player2.style.display = 'block'
+    status.innerHTML = ''
+}
+
+initializeGame()
