@@ -19,23 +19,25 @@
 const gameBoard = document.querySelector('#game-board')
 const player1 = document.querySelector('#player1')
 const player2 = document.querySelector('#player2')
+const gameStatus = document.getElementById('status')
 
-const currentGameBoard = ['','','','','','','','','']
-
-let turnCounter = 2
+let currentPlayerBoard = ['','','','','','','','','']
+let gameActive = true
+let turnCounter = 3
 let result = 'x'
 
 
 const alternatePlayer = () => {
     if (turnCounter % 2 === 0) { 
-        return 'o'
-    } else {  
         return 'x'
+    } else {  
+        return 'o'
     }   
 }
 
 const updateResult = () => {
     result = alternatePlayer()
+    turnCounter++
 }
 
 const hidePlayerText = () => {
@@ -60,30 +62,64 @@ for(let i = 0; i < 9; i++){
         playerClick(result)
         updateResult()
         hidePlayerText()
-        turnCounter++
-        currentGameBoard[i] = result
+        updateGameBoard()
+        checkWinCondition()
+
+        
     })
 } 
 
 const playerClick = (text) => {
     event.target.innerText = text
+    event.target.classList.add('clicked')
 }
 
-const winCondition = [
-    ['o','o','o','','','','','',''],
-    ['','','','o','o','o','','',''],
-    ['','','','','','','o','o','o'],
-    ['o','','','o','','','o','',''],
-    ['','o','','','o','','','o',''],
-    ['','','o','','','o','','','o'],
-    ['o','','','','o','','','','o'],
-    ['','','o','','o','','o','',''],
-    ['x','x','x','','','','','',''],
-    ['','','','x','x','x','','',''],
-    ['','','','','','','x','x','x'],
-    ['x','','','x','','','x','',''],
-    ['','x','','','x','','','x',''],
-    ['','','x','','','x','','','x'],
-    ['x','','','','x','','','','x'],
-    ['','','x','','x','','x','','']
+const updateGameBoard = () => {
+    
+    const index = event.target.value
+    console.log(index)
+    currentPlayerBoard[index] = result
+}
+
+const winConditions = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6]
 ]
+
+const checkWinCondition = () => {
+    let gameWon = false;
+    for (let i = 0; i < 8; i++) {
+        const condition = winConditions[i];
+        let a = currentPlayerBoard[condition[0]];
+        let b = currentPlayerBoard[condition[1]];
+        let c = currentPlayerBoard[condition[2]];
+        if (a == '' || b == '' || c == '') {
+            continue
+        }
+        if (a === b && b === c) {
+            gameWon = true
+            
+            break
+        }
+    }
+    
+if (gameWon) {
+        gameStatus.innerHTML = winMessage()
+        gameActive = false
+        return
+    }
+}
+
+const winMessage = ()=>{
+    if (turnCounter % 2 === 0) { 
+        return `Player X win`
+    } else {  
+        return `Player O win`
+    }   
+}

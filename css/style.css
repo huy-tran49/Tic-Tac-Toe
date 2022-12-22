@@ -33,6 +33,7 @@ div.board {
 #container {
     display: flex;
     justify-content: space-around;
+    height: 90px;
 }
 
 #player1 {
@@ -45,4 +46,14 @@ div.board {
     display: block;
     color: rgb(102, 0, 255);
     font-size: 40px;
+}
+
+.clicked {
+    pointer-events: none;
+}
+
+h2#status {
+    display:flex;
+    justify-content: center;
+    margin-top: 175px;
 }
