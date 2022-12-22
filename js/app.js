@@ -75,7 +75,6 @@ const playerClick = (text) => {
 
 const updateGameBoard = () => {
     const index = event.target.value
-    console.log(index)
     currentPlayerBoard[index] = result
 }
 
@@ -136,9 +135,6 @@ const lockGameBoard = () => {
 
 reset.addEventListener('click', ()=>{
     resetGame()
-    player1.style.display = 'block'
-    player2.style.display = 'block'
-    status.innerHTML = ''
 })
 
 const resetGameBoard = () => {
@@ -155,6 +151,9 @@ const resetGame = () => {
     gameActive = true
     turnCounter = 3
     result = 'x'
+    player1.style.display = 'block'
+    player2.style.display = 'block'
+    status.innerHTML = ''
 }
 
 initializeGame()
