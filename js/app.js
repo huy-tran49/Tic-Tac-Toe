@@ -19,28 +19,25 @@
 const gameBoard = document.querySelector('#game-board')
 const player1 = document.querySelector('#player1')
 const player2 = document.querySelector('#player2')
+const gameStatus = document.getElementById('status')
 
-const player1Board = []
-const player2Board = []
-
-let turnCounter = 2
+let currentPlayerBoard = ['','','','','','','','','']
+let gameActive = true
+let turnCounter = 3
 let result = 'x'
 
 
 const alternatePlayer = () => {
     if (turnCounter % 2 === 0) { 
-        return 'o'
-    } else {  
         return 'x'
+    } else {  
+        return 'o'
     }   
-}
-
-const disableClick = () => {
-    event.target.pointerEvents = 'none'
 }
 
 const updateResult = () => {
     result = alternatePlayer()
+    turnCounter++
 }
 
 const hidePlayerText = () => {
@@ -53,14 +50,6 @@ const hidePlayerText = () => {
     }
 }
 
-const pushToArray = (i) => {
-    if (result === 'x'){
-        player2Board.push(event.target.value = i)
-    } else {
-        player1Board.push(event.target.value = i)
-    }
-}
-
 for(let i = 0; i < 9; i++){
     const square = document.createElement('div')
     square.classList.add('board')
@@ -68,49 +57,69 @@ for(let i = 0; i < 9; i++){
     gameBoard.appendChild(square)
     square.value = i
     
-    
 
     square.addEventListener('click', () => {
         playerClick(result)
         updateResult()
         hidePlayerText()
-        turnCounter++
-        pushToArray(i)
+        updateGameBoard()
         checkWinCondition()
+
         
     })
 } 
 
 const playerClick = (text) => {
     event.target.innerText = text
+    event.target.classList.add('clicked')
 }
 
-const winCondition = [
-   ['0','1','2'],
-   ['3','4','5'],
-   ['6','7','8'],
-   ['0','3','6'],
-   ['1','4','7'],
-   ['2','5','8'],
-   ['0','4','8'],
-   ['2','4','6']
+const updateGameBoard = () => {
+    
+    const index = event.target.value
+    console.log(index)
+    currentPlayerBoard[index] = result
+}
+
+const winConditions = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6]
 ]
 
 const checkWinCondition = () => {
-    winCondition.filter((board)=>{
-        player1Board.includes(board)
-        return true
-    })
-    const compareBoard2 = winCondition.filter((board)=>{
-        player2Board.includes(board)
-        return true
-    })
-
+    let gameWon = false;
+    for (let i = 0; i < 8; i++) {
+        const condition = winConditions[i];
+        let a = currentPlayerBoard[condition[0]];
+        let b = currentPlayerBoard[condition[1]];
+        let c = currentPlayerBoard[condition[2]];
+        if (a == '' || b == '' || c == '') {
+            continue
+        }
+        if (a === b && b === c) {
+            gameWon = true
+            
+            break
+        }
+    }
     
-    if(compareBoard1 === true) {
-        console.log('player1 wins')
+if (gameWon) {
+        gameStatus.innerHTML = winMessage()
+        gameActive = false
+        return
     }
-    if(compareBoard2 === true) {
-        console.log('player2 wins')
-    }
+}
+
+const winMessage = ()=>{
+    if (turnCounter % 2 === 0) { 
+        return `Player X win`
+    } else {  
+        return `Player O win`
+    }   
 }
